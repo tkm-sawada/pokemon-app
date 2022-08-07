@@ -1,0 +1,3 @@
+type handleMovePageProps = {
+  pageNum: number;
+}

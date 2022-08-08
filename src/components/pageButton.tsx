@@ -12,7 +12,7 @@ const PageButton = memo((props: Props) => {
 
   return (
     <div className="flex justify-center">
-      <div className="w-4/5 my-20 flex flex-row justify-center">
+      <div className="w-4/5 mt-10 mb-20 flex flex-row justify-center">
         {pages.map((pageNum: number, i: number) => {
           return (
             pageNum === nowPage ? (

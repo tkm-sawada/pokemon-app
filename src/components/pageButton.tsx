@@ -11,14 +11,14 @@ const PageButton = memo((props: Props) => {
   const { nowPage } = useContext(NowPageContext);
 
   return (
-    <div className="flex justify-center">
-      <div className="w-4/5 mt-10 mb-20 flex flex-row justify-center">
+    <div className="flex justify-center fixed bottom-0 w-full shadow-md bg-white">
+      <div className="w-4/5 mt-2 mb-2 flex flex-row justify-center">
         {pages.map((pageNum: number, i: number) => {
           return (
             pageNum === nowPage ? (
               <button key={i} className="flex-1 mx-4 py-3 px-4 text-white bg-gray-800 border-0 hover:bg-gray-500 rounded-xl text-xl shadow-2xl pointer-events-none" disabled>{pageNum}</button>
             ) : (
-              <button key={i} onClick={() => handleMovePage({pageNum})} className="flex-1 mx-4 py-3 px-4 text-white bg-red-800 border-0 hover:bg-red-500 rounded-xl text-xl shadow-2xl">{pageNum}</button>
+              <button key={i} onClick={() => handleMovePage({pageNum})} className="flex-1 mx-4 py-3 px-4 text-black bg-white border-0 hover:bg-gray-200 rounded-xl text-xl shadow-2xl">{pageNum}</button>
             )
           )
         })}

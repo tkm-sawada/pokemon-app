@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useEffect, useState } from 'react';
 import { getImage, getPokemon } from '../utils/pokemon';
-import Chart from './Chart';
+import StatusTable from './StatusTable';
 
 type Props = {
   pokemonCard: PokemonCard;
@@ -18,21 +18,23 @@ const PokemonDetail = (props: Props) => {
   const { pokemonCard } = props;
   const [isLoading, setIsloading] = useState(true);
   const [variety, setVariety] = useState(0);
-  // const [pokemonDetail, setPokemonDetail] = useState<PokemonDetail>(
-  //   {
-  //     id: 0,
-  //     name: "",
-  //     frontDefault: "",
-  //     frontShiny: "",
-  //     genus: "",
-  //     types: [],
-  //     weight: 0,
-  //     height: 0,
-  //     abilities: [""],
-  //     flavor_texts: []
-  //   }
-  // );
-  const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail[]>([]);
+  const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail[]>(
+    [
+      {
+        id: 0,
+        name: "",
+        frontDefault: "",
+        frontShiny: "",
+        genus: "",
+        types: [],
+        weight: 0,
+        height: 0,
+        abilities: [""],
+        flavor_texts: [],
+        status: {hp: 0, attack: 0, defense: 0, specialAttack: 0, specialDefense: 0, speed: 0}
+      }
+    ]
+  );
 
   useEffect(() => {
     loadPokemonList();
@@ -232,8 +234,7 @@ const PokemonDetail = (props: Props) => {
     // そのポケモンの姿の種類分ループ
     for(let i in pokemonRecords){
       // 1つの姿に紐づく特性情報を取得
-      let status: Status = {hp: "", attack: "", defense: "", specialAttack: "", specialDefense: "", speed: ""
-      };
+      let status: Status = {hp: 0, attack: 0, defense: 0, specialAttack: 0, specialDefense: 0, speed: 0};
       for(let j in pokemonRecords[i].stats){
         switch(pokemonRecords[i].stats[j].stat.name){
           case "hp":
@@ -314,7 +315,7 @@ const PokemonDetail = (props: Props) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
       <div onClick={closeModal} className="fixed top-0 left-0 w-full h-full bg-gray-500 bg-opacity-50 z-40"></div>
-      <div className="p-4 rounded-xl bg-white z-40 lg:w-1/2 md:w-3/4 w-5/6 h-5/6">
+      <div className="p-4 rounded-xl bg-white z-40 lg:w-1/2 md:w-3/4 w-5/6 h-5/6 overflow-y-scroll">
         {isLoading ? (
           <div className="h-5/6">
             <FontAwesomeIcon icon={faSpinner} className="mt-12 text-5xl animate-spin"/>
@@ -332,8 +333,9 @@ const PokemonDetail = (props: Props) => {
                 })}
               </div>
             </div>
+            
             <div className="grid items-center h-40">
-              <div className="flex justify-center">
+              <div className="flex justify-center mt-10">
                 <img src={pokemonDetails[variety].frontDefault} alt={pokemonDetails[variety].name} className="max-h-40"/>
                 <img src={pokemonDetails[variety].frontShiny} alt={pokemonDetails[variety].name} className="max-h-40"/>
               </div>
@@ -342,7 +344,7 @@ const PokemonDetail = (props: Props) => {
               <div className="py-3 text-3xl rounded-t text-white bg-gray-800">{pokemonDetails[variety].name}</div>
               <div className="py-2 px-4 rounded-b ">{pokemonDetails[variety].genus}</div>
             </div>
-            <Chart/>
+
             <table className="w-full my-6 shadow overflow-hidden rounded border-gray-200">
               <tbody>
                 <tr>
@@ -377,6 +379,10 @@ const PokemonDetail = (props: Props) => {
               </tbody>
             </table>
 
+            <div className="my-6">
+              <StatusTable status={pokemonDetails[variety].status}/>
+            </div>
+            
             <div className="relative">
               <Swiper
                 // install Swiper modules

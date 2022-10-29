@@ -18,7 +18,7 @@ const PokemonCard = memo((props: Props) => {
       {isShowModal && (
         <PokemonDetail pokemonCard={pokemonCard} setShowModal={setShowModal} />
       )}
-      <div onClick={showModal} className={"mx-5 rounded-xl bg-slate-100" + (isShowModal ? " pointer-events-none" : " cursor-pointer hover:scale-110 duration-200")}>
+      <div onClick={showModal} className={"md:mx-5 mx-2 rounded-xl bg-slate-100" + (isShowModal ? " pointer-events-none" : " cursor-pointer hover:scale-110 duration-200")}>
         <p className='text-left w-4/5 mt-3 mx-auto'>No.{pokemonCard.id}</p>
         <div className="flex justify-center h-24">
           <img src={pokemonCard.front_default} alt={pokemonCard.name}/>

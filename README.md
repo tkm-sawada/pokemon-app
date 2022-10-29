@@ -1,3 +1,18 @@
+# ポケモン図鑑アプリ with React
+PekeAPIを用いたポケモン図鑑アプリです。
+スマホからも閲覧いただけます。
+
+## URL
+https://pokemon-app-seven-henna.vercel.app/
+
+## 使用技術
+- React
+- TypeScript
+- Swiper
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -70,5 +85,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 
-
- npm i swiper

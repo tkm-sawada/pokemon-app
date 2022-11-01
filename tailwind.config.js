@@ -4,7 +4,12 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      // フォントを追加
+      fontFamily: {
+        kiwi: ['Kiwi Maru'],
+      },
+    },
   },
   plugins: [],
 }

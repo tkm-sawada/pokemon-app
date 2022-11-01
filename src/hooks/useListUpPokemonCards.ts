@@ -67,7 +67,7 @@ export const useListUpPokemonCards = () => {
     }
     
     // 指定されたページに表示するページリストを決定
-    const maxPage: number = 10;
+    const maxPage: number = 9;
     const pageListup = async() => {
       // 表示するページの開始ページを決定
       let startPage: number = nowPage - 4; //4ページ前まで戻れるようにしておく

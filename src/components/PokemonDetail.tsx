@@ -44,7 +44,7 @@ const PokemonDetail = (props: Props) => {
               </div>
             </div>
             
-            <div className="grid items-center h-40">
+            <div className="grid items-center">
               <div className="flex justify-center mt-10">
                 <img src={pokemonDetails[variety].frontDefault} alt={pokemonDetails[variety].name} className="max-h-40"/>
                 <img src={pokemonDetails[variety].frontShiny} alt={pokemonDetails[variety].name} className="max-h-40"/>

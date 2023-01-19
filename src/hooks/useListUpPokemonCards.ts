@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { getPokemon } from '../utils/pokemon';
+import { getImage, getPokemon } from '../utils/pokemon';
 import { NowPageContext } from '../components/providers/NowPageProvider';
 
 export const useListUpPokemonCards = () => {
@@ -34,7 +34,7 @@ export const useListUpPokemonCards = () => {
       //各ポケモンの詳細情報を取得
       await loadPokemonList(res.results);
       
-      //setNowPage(1);
+      setNowPage(1);  //ページング処理のトリガー
     }
     fetchPokemonData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,7 +68,7 @@ export const useListUpPokemonCards = () => {
     
     // 指定されたページに表示するページリストを決定
     const maxPage: number = 9;
-    const pageListup = async() => {
+    const pageListup = () => {
       // 表示するページの開始ページを決定
       let startPage: number = nowPage - 4; //4ページ前まで戻れるようにしておく
       if(startPage < 1){
@@ -88,10 +88,24 @@ export const useListUpPokemonCards = () => {
       for (let i: number = startPage; i < endPageCount; i += 1) {
         pageNum = [...pageNum, i]
       }
+      // // 表示するページの開始ページを決定
+      // let startPage: number = 1;
+      // // 表示するページの最終ページを決定
+      // let endPageCount: number = Math.ceil(allPokemonCount / limit) + 1;
+      // // 表示するページ番号のリストアップ
+      // let pageNum: number[] = [];
+
+      // for (let i: number = startPage; i < endPageCount; i += 1) {
+      //   pageNum = [...pageNum, i]
+      // }
       setPages(pageNum);
     }
-    pokemonReload();
-    pageListup();
+
+    //NowPageContextによりnowPageが更新されることで、fetchPokemonDataより先に動作しないよう制御
+    if (nowPage > 0) {
+      pokemonReload();
+      pageListup();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nowPage]);
 
@@ -130,13 +144,13 @@ export const useListUpPokemonCards = () => {
     for(let i in pokemonInfo){
       // 通常色の画像がない場合はオフィシャル画像を参照
       let frontDefault: string = pokemonInfo[i].sprites.front_default;
-      if(frontDefault === null){
-        frontDefault = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonInfo[i].id}.png`;
-      }
+      // if(frontDefault === null){
+      //   frontDefault = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonInfo[i].id}.png`;
+      // }
       const pokemonCard: PokemonCard = {
         id: pokemonInfo[i].id,
         name: pokemonSpeciesNamesJa[i][0].name,
-        front_default: frontDefault,
+        front_default:  await getImage(frontDefault),
         url: initURL + "/" + pokemonInfo[i].id,
         speciesUrl: pokemonInfo[i].species.url,
         typesUrl: pokemonInfo[i].types.map((type: any, i: number) => {

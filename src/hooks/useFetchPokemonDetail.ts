@@ -1,4 +1,4 @@
-import { faBolt, faBug, faCircle, faDragon, faDroplet, faFaceAngry, faFaceSmile, faFeather, faFire, faGhost, faHandFist, faLeaf, faMountain, faMountainSun, faSkullCrossbones, faSnowflake, faSpinner, faSpoon, faWrench, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faBolt, faBug, faCircle, faDragon, faDroplet, faFaceAngry, faFaceSmile, faFeather, faFire, faGhost, faHandFist, faLeaf, faMountain, faMountainSun, faSkullCrossbones, faSnowflake, faSpoon, faWrench, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 import { useEffect, useState } from 'react';
 import { getImage, getPokemon } from '../utils/pokemon';
@@ -38,15 +38,15 @@ export const useFetchPokemonDetail = (props: Props) => {
   }, []);
   const loadPokemonList = async() => {
     // ポケモン１匹分の情報を取得
-    const pokemonRecord: any = await getPokemon(pokemonCard.url);
+    const pokemonRecord = await getPokemon(pokemonCard.url);
     /////////////////////////////////////////////
 
     // **************************************
     // ポケモン１匹分に紐づく種族情報を取得
     // **************************************
-    const pokemonSpecies: any = await getPokemon(pokemonCard.speciesUrl);
+    const pokemonSpecies = await getPokemon(pokemonCard.speciesUrl);
     // 種族の日本語名を抽出
-    const pokemonSpeciesGeneraGenusJa: any = pokemonSpecies.genera.filter((genera: any) => {
+    const pokemonSpeciesGeneraGenusJa = pokemonSpecies.genera.filter((genera: any) => {
       return genera.language.name === "ja";
     })
     /////////////////////////////////////////////
@@ -275,15 +275,15 @@ export const useFetchPokemonDetail = (props: Props) => {
       suffix  = pokemonRecords[i].name.indexOf("-hisui") > -1 ? "（ヒスイ）" : suffix;
       // 通常色の画像がない場合はオフィシャル画像を参照
       let frontDefault: string = pokemonRecords[i].sprites.front_default;
-      if(frontDefault === null){
-        frontDefault = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonRecords[i].id}.png`;
-      }
+      // if(frontDefault === null){
+      //   frontDefault = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonRecords[i].id}.png`;
+      // }
       pokemonDetails[i] = {
         id: pokemonCard.id,
         name: prefix + pokemonCard.name + suffix,
         frontDefault: await getImage(frontDefault),
         frontShiny: await getImage(pokemonRecords[i].sprites.front_shiny),
-        genus: pokemonSpeciesGeneraGenusJa[0].genus,
+        genus: (pokemonSpeciesGeneraGenusJa.length > 0 && pokemonSpeciesGeneraGenusJa[0].genus),
         types: types[i],
         weight: pokemonRecords[i].weight / 10,
         height: pokemonRecords[i].height / 10,

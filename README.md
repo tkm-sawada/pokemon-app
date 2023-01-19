@@ -15,4 +15,4 @@ https://pokemon-app-seven-henna.vercel.app/
 - TypeScript
 - Swiper
 - PokeAPI
-
+- react-indiana-drag-scroll

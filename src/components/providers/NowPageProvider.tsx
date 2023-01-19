@@ -14,7 +14,7 @@ type Props = {
 export const NowPageProvider: FC<Props> = (props) => {
   const { children } = props;
   
-  const [nowPage, setNowPage] = useState(1);
+  const [nowPage, setNowPage] = useState(0);
 
   return (
     <NowPageContext.Provider value={{nowPage, setNowPage}}>

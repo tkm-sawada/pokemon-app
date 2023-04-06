@@ -12,7 +12,7 @@ function App() {
   return (
     <div className='text-center w-full h-full font-kiwi font-semibold tracking-widest text-neutral-600'>
       <Navbar />
-      <div className='fixed w-full h-screen -z-10 bg-white'></div>
+      <div className='fixed w-full h-screen -z-10 bg-white' />
       {/* <button type="button" onClick={() => bottomScroll()} className="fixed right-1 bottom-1 flex-1 mx-4 py-3 px-4 text-black bg-white border-0 hover:bg-red-200 bg-opacity-50 rounded-xl text-xl shadow-2xl z-40">↓</button> */}
       <div className='pt-16 z-10'>
         {isLoading ? (

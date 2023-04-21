@@ -8,7 +8,7 @@ export const useListUpPokemonCards = () => {
   const initURL: string = 'https://pokeapi.co/api/v2/pokemon'
   const [isLoading, setIsloading] = useState(true)
   const [pokemonCards, setPokemonCards] = useState<PokemonCard[]>([])
-  const [pages, setPages] = useState([0])
+  const [page, setPage] = useState(1)
   const [allPokemonCount, setAllPokemonCount] = useState(0)
 
   const nowPage = useSelector((state: RootState) => state.nowPage.value)
@@ -38,7 +38,7 @@ export const useListUpPokemonCards = () => {
       //各ポケモンの詳細情報を取得
       await loadPokemonList(res.results)
 
-      //setNowPage(1) //ページング処理のトリガー
+      //ページング処理のトリガー
       dispatch(setnowPageCount(1))
     }
     fetchPokemonData()
@@ -69,45 +69,10 @@ export const useListUpPokemonCards = () => {
       await loadPokemonList(res.results)
     }
 
-    // 指定されたページに表示するページリストを決定
-    const maxPage: number = 9
-    const pageListup = () => {
-      // 表示するページの開始ページを決定
-      let startPage: number = nowPage - 4 //4ページ前まで戻れるようにしておく
-      if (startPage < 1) {
-        startPage = 1
-      }
-      // 表示するページの最終ページを決定
-      let endPageCount: number = startPage + maxPage
-      if (allPokemonCount > limit) {
-        if (endPageCount > Math.ceil(allPokemonCount / limit) + 1) {
-          // 一番最後のページ番号を超えている場合は最終ページに揃える
-          endPageCount = Math.ceil(allPokemonCount / limit) + 1
-          startPage = endPageCount - maxPage
-        }
-      }
-      // 表示するページ番号のリストアップ
-      let pageNum: number[] = []
-      for (let i: number = startPage; i < endPageCount; i += 1) {
-        pageNum = [...pageNum, i]
-      }
-      // // 表示するページの開始ページを決定
-      // let startPage: number = 1;
-      // // 表示するページの最終ページを決定
-      // let endPageCount: number = Math.ceil(allPokemonCount / limit) + 1;
-      // // 表示するページ番号のリストアップ
-      // let pageNum: number[] = [];
-
-      // for (let i: number = startPage; i < endPageCount; i += 1) {
-      //   pageNum = [...pageNum, i]
-      // }
-      setPages(pageNum)
-    }
-
     //NowPageContextによりnowPageが更新されることで、fetchPokemonDataより先に動作しないよう制御
     if (nowPage > 0) {
       pokemonReload()
-      pageListup()
+      setPage(Math.ceil(allPokemonCount / limit))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nowPage])
@@ -149,9 +114,13 @@ export const useListUpPokemonCards = () => {
       // if(frontDefault === null){
       //   frontDefault = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonInfo[i].id}.png`;
       // }
+
       const pokemonCard: PokemonCard = {
         id: pokemonInfo[i].id,
-        name: pokemonSpeciesNamesJa[i][0].name,
+        name:
+          pokemonSpeciesNamesJa[i][0] !== undefined
+            ? pokemonSpeciesNamesJa[i][0].name
+            : pokemonInfo[i].name,
         front_default: await getImage(frontDefault),
         url: initURL + '/' + pokemonInfo[i].id,
         speciesUrl: pokemonInfo[i].species.url,
@@ -189,7 +158,7 @@ export const useListUpPokemonCards = () => {
   return {
     isLoading,
     pokemonCards,
-    pages,
+    page,
     handleMovePage,
   }
 }

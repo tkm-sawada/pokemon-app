@@ -1,13 +1,19 @@
 import Navbar from './components/Navbar'
 import PokemonCard from './components/PokemonCard'
-import PageButton from './components/PageButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { useListUpPokemonCards } from './hooks/useListUpPokemonCards'
+import Pagination from '@mui/material/Pagination'
+import { RootState } from './redux/store'
+import { useSelector } from 'react-redux'
 
 function App() {
-  const { isLoading, pokemonCards, pages, handleMovePage } =
+  const { isLoading, pokemonCards, page, handleMovePage } =
     useListUpPokemonCards()
+  const nowPage = useSelector((state: RootState) => state.nowPage.value)
+  const handleChange = (event: React.ChangeEvent<unknown>, pageNum: number) => {
+    handleMovePage({ pageNum })
+  }
 
   return (
     <div className='text-center w-full h-full font-kiwi font-semibold tracking-widest text-neutral-600'>
@@ -22,12 +28,19 @@ function App() {
           />
         ) : (
           <div>
-            <div className='grid lg:grid-cols-6 md:grid-cols-4 grid-cols-2 gap-5 mt-5 pb-32'>
+            <div className='grid lg:grid-cols-6 md:grid-cols-4 grid-cols-2 gap-5 mt-5'>
               {pokemonCards.map((pokemonCard: any, i: number) => {
                 return <PokemonCard key={i} pokemonCard={pokemonCard} />
               })}
             </div>
-            <PageButton pages={pages} handleMovePage={handleMovePage} />
+            <Pagination
+              className='flex justify-center my-12'
+              count={page}
+              page={nowPage}
+              siblingCount={3}
+              size='large'
+              onChange={handleChange}
+            />
           </div>
         )}
       </div>
